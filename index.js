@@ -45,6 +45,7 @@ app.get('/items', (req, res) => {
 
 //localhost:4000/items/add?name=Milk&priority=high&store=JewelOsco
 // for empty date and store http://localhost:4000/items/add?name=Milk&date=&priority=high&store=
+// for all fields filled http://localhost:4000/items/add?name=Milk&date=2020-03-15&priority=high&store=JewelOsco
 // date = YYYY-MM-DD
 app.get('/items/add', (req, res) => {
    const {name, date, priority, store} = req.query;
