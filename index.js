@@ -6,14 +6,14 @@ const mysql = require('mysql');
 
 const app = express();
 
-const SELECT_ALL_ITEMS_QUERY = 'SELECT * FROM Item;';
+const SELECT_ALL_ITEMS_QUERY = 'SELECT * FROM GrossListDatabase.GrossList;';
 
 const connection = mysql.createConnection({
    host: 'localhost',
    port: 3306,
    user: 'root',
    password: 'rootdatabase123',
-   database: 'listdatabase'
+   database: 'GrossListDatabase'
 });
 
 connection.connect(err => {
@@ -27,7 +27,7 @@ connection.connect(err => {
 app.use(cors());
 
 app.get('/', (req, res) => {
-   res.send('Go to different API paths to access different shit!');
+   res.send('Go to different API paths to access different stuff!');
 });
 
 app.get('/items', (req, res) => {
@@ -43,13 +43,11 @@ app.get('/items', (req, res) => {
    });
 });
 
-//localhost:4000/items/add?name=Milk&priority=high&store=JewelOsco
-// for empty date and store http://localhost:4000/items/add?name=Milk&date=&priority=high&store=
-// for all fields filled http://localhost:4000/items/add?name=Milk&date=2020-03-15&priority=high&store=JewelOsco
-// date = YYYY-MM-DD
+// localhost:4000/items/add?name=Backpack&priority=MEDIUM&store=Dicks
+// for empty store http://localhost:4000/items/add?name=Backpack&priority=MEDIUM&store=
 app.get('/items/add', (req, res) => {
-   const {name, date, priority, store} = req.query;
-   const INSERT_ITEM_QUERY = `INSERT INTO Item(IName, IDate, IPriority, IStore) VALUES ('${name}','${date}','${priority}','${store}')`;
+   const {name, priority, store} = req.query;
+   const INSERT_ITEM_QUERY = `INSERT INTO GrossListDatabase.GrossList(IName, IPriority, IStore) VALUES ('${name}','${priority}','${store}');`;
    connection.query(INSERT_ITEM_QUERY, (err, results) => {
       if(err){
          return res.send(err);
@@ -60,12 +58,16 @@ app.get('/items/add', (req, res) => {
    });
 });
 
-app.get('/items/date', (req, res) => {
-   res.send('Sending all of the items for specified DATE ... ');
+app.get('/items/lowP', (req, res) => {
+   res.send('Sending all of the items based on LOW PRIORITY ... ');
 });
 
-app.get('/items/priority', (req, res) => {
-   res.send('Sending all of the items based on LOW, MEDIUM or HIGH PRIORITY ... ');
+app.get('/items/mediumP', (req, res) => {
+   res.send('Sending all of the items based on MEDIUM PRIORITY ... ');
+});
+
+app.get('/items/highP', (req, res) => {
+   res.send('Sending all of the items based on HIGH PRIORITY ... ');
 });
 
 app.get('/items/store', (req, res) => {
@@ -75,5 +77,3 @@ app.get('/items/store', (req, res) => {
 app.listen(4000, () => {
    console.log('This list server is running on port 4000 ... ');
 });
-
-//insert into Item(IName, IDate, IPriority, IStrore) values("Lemone cake", curdate(), "high", "ALDI");
