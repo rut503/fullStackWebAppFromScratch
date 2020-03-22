@@ -5,6 +5,7 @@ CREATE TABLE GrossListDatabase.GrossList (
     IName VARCHAR(30) NOT NULL,
     IPriority VARCHAR(6) NOT NULL,
     IStore VARCHAR(15),
+    IStatus BOOL NOT NULL DEFAULT FALSE,
     PRIMARY KEY (ID)
 );
 
